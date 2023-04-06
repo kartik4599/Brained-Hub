@@ -1,0 +1,22 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const userRoutes_1 = __importDefault(require("./Routes/userRoutes"));
+const dotenv_1 = __importDefault(require("dotenv"));
+const body_parser_1 = __importDefault(require("body-parser"));
+const productRoutes_1 = __importDefault(require("./Routes/productRoutes"));
+const database_1 = __importDefault(require("./Utils/database"));
+const cors_1 = __importDefault(require("cors"));
+const cartRoutes_1 = __importDefault(require("./Routes/cartRoutes"));
+dotenv_1.default.config();
+(0, database_1.default)(process.env.MONGO_URI || "");
+const app = (0, express_1.default)();
+app.use((0, cors_1.default)({ origin: "*" }));
+app.use(body_parser_1.default.json());
+app.use("/api/user", userRoutes_1.default);
+app.use("/api/product", productRoutes_1.default);
+app.use("/api/cart", cartRoutes_1.default);
+app.listen(process.env.PORT || 6000);
